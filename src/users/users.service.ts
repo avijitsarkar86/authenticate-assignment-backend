@@ -8,19 +8,19 @@ import { Repository } from 'typeorm';
 
 @Injectable()
 export class UsersService {
-  constructor(@InjectRepository(User) private userRepo: Repository<User>) { }
+  // constructor(@InjectRepository(User) private userRepo: Repository<User>) { }
 
-  create(countryCode: number, phoneNumber: number, password: string, email?: string) {
-    const user = this.userRepo.create({ countryCode, phoneNumber, password, email });
+  // create(countryCode: number, phoneNumber: number, password: string, email?: string) {
+  //   const user = this.userRepo.create({ countryCode, phoneNumber, password, email });
 
-    return this.userRepo.save(user);
-  }
+  //   return this.userRepo.save(user);
+  // }
 
-  findRegisteredPhone(countryCode: number, phoneNumber: number) {
-    if (!countryCode || !phoneNumber) return null;
+  // findRegisteredPhone(countryCode: number, phoneNumber: number) {
+  //   if (!countryCode || !phoneNumber) return null;
 
-    return this.userRepo.findOneBy({ countryCode, phoneNumber });
-  }
+  //   return this.userRepo.findOneBy({ countryCode, phoneNumber });
+  // }
 
   // findOne(id: string) {
   //   if (!id) {

@@ -20,26 +20,27 @@ import { LoginUserDto } from 'src/users/dtos/login-user-dto';
 @ApiTags('auth')
 // @UseFilters(HttpExceptionFilter)
 @Controller('auth')
-@Serialize(UserDto)
+// @Serialize(UserDto)
 export class AuthController {
   constructor(private authService: AuthService) { }
 
 
   @Post('/signup')
   createUser(@Body() body: CreateUserDto) {
-    return this.authService.signup(body);
+    return { body };
+    // return this.authService.signup(body);
   }
 
-  @Post('/login')
-  @HttpCode(200)
-  signin(@Body() body: LoginUserDto) {
-    return this.authService.authenticate(body);
-  }
+  // @Post('/login')
+  // @HttpCode(200)
+  // signin(@Body() body: LoginUserDto) {
+  //   return this.authService.authenticate(body);
+  // }
 
-  @UseGuards(AuthGuard)
-  @Get('/whoami')
-  getProfile(@Request() req) {
-    console.log('req.user : ', req.user);
-    return req.user;
-  }
+  // @UseGuards(AuthGuard)
+  // @Get('/whoami')
+  // getProfile(@Request() req) {
+  //   console.log('req.user : ', req.user);
+  //   return req.user;
+  // }
 }

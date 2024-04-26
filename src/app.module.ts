@@ -7,7 +7,9 @@ import { ConfigModule, ConfigService } from '@nestjs/config';
 import { TypeOrmModule } from '@nestjs/typeorm';
 import { User } from './users/entities/user.entity';
 import { APP_PIPE } from '@nestjs/core';
-import { DatabaseType } from 'typeorm';
+import { ContactsModule } from './contacts/contacts.module';
+import { PhoneNumbersModule } from './phone-numbers/phone-numbers.module';
+import { PhoneNumber } from './phone-numbers/entities/phone-number.entity';
 
 @Module({
   imports: [
@@ -24,12 +26,14 @@ import { DatabaseType } from 'typeorm';
         username: config.get<string>('DB_USER'),
         password: config.get<string>('DB_PASS'),
         database: config.get<string>('DB_NAME') as string,
-        entities: [User],
+        entities: [PhoneNumber, User],
         synchronize: true, // IMPORTANT: MAKE IT 'false' IN PRODUCTION
       }),
     }),
     AuthModule,
     UsersModule,
+    ContactsModule,
+    PhoneNumbersModule,
   ],
   controllers: [AppController],
   providers: [

@@ -1,3 +1,4 @@
+import { PhoneNumber } from 'src/phone-numbers/entities/phone-number.entity';
 import {
   Entity,
   Column,
@@ -5,19 +6,20 @@ import {
   OneToMany,
   Index,
   Unique,
+  OneToOne,
+  JoinColumn,
 } from 'typeorm';
 
 @Entity()
-@Unique('UQ_NUMBER', ['countryCode', 'phoneNumber'])
 export class User {
   @PrimaryGeneratedColumn()
   id: number;
 
-  @Column({ type: 'smallint' })
-  countryCode: number;
+  // @Column({ type: 'smallint' })
+  // countryCode: number;
 
-  @Column({ type: 'integer' })
-  phoneNumber: number;
+  // @Column({ type: 'integer' })
+  // phoneNumber: number;
 
   @Column({ unique: true, nullable: true })
   email: string;
@@ -25,6 +27,7 @@ export class User {
   @Column()
   password: string;
 
-  // @OneToMany(() => Task, (task) => task.user)
-  // tasks: Task[];
+  @OneToOne(() => PhoneNumber, { cascade: true })
+  @JoinColumn()
+  number: PhoneNumber;
 }
