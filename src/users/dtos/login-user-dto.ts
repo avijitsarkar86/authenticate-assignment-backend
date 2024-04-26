@@ -1,21 +1,13 @@
-import { ApiProperty, ApiPropertyOptional } from '@nestjs/swagger';
-import { Type } from 'class-transformer';
+import { ApiProperty } from '@nestjs/swagger';
 import {
-  IsEmail,
   IsNotEmpty,
   IsNumber,
-  IsOptional,
   IsString,
   Max,
   Min,
 } from 'class-validator';
 
-export class CreateUserDto {
-  @ApiPropertyOptional({ example: 'abc@gmail.com' })
-  @IsEmail()
-  @IsOptional()
-  email: string;
-
+export class LoginUserDto {
   @ApiProperty({ example: 91, minimum: 1, maximum: 999 })
   @IsNotEmpty()
   @IsNumber()

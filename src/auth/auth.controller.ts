@@ -15,9 +15,10 @@ import { UserDto } from 'src/users/dtos/user.dto';
 import { AuthGuard } from './guards/auth.guard';
 import { ApiTags } from '@nestjs/swagger';
 import { HttpExceptionFilter } from 'src/filters/http-exception.filter';
+import { LoginUserDto } from 'src/users/dtos/login-user-dto';
 
 @ApiTags('auth')
-@UseFilters(HttpExceptionFilter)
+// @UseFilters(HttpExceptionFilter)
 @Controller('auth')
 @Serialize(UserDto)
 export class AuthController {
@@ -31,7 +32,7 @@ export class AuthController {
 
   @Post('/login')
   @HttpCode(200)
-  signin(@Body() body: CreateUserDto) {
+  signin(@Body() body: LoginUserDto) {
     return this.authService.authenticate(body);
   }
 

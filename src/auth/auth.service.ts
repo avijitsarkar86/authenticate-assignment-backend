@@ -9,6 +9,7 @@ import { randomBytes, scrypt as _scrypt } from 'crypto';
 import { promisify } from 'util';
 import { JwtService } from '@nestjs/jwt';
 import { CreateUserDto } from 'src/users/dtos/create-user-dto';
+import { LoginUserDto } from 'src/users/dtos/login-user-dto';
 
 const scrypt = promisify(_scrypt);
 
@@ -75,7 +76,7 @@ export class AuthService {
   }
 
   async authenticate(
-    requestBody: CreateUserDto
+    requestBody: LoginUserDto
   ) {
     try {
       const { countryCode, phoneNumber, password } = requestBody;
