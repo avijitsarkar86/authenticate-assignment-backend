@@ -1,6 +1,7 @@
 import {
   BadRequestException,
   Injectable,
+  InternalServerErrorException,
   UnauthorizedException,
 } from '@nestjs/common';
 import { UsersService } from 'src/users/users.service';
@@ -11,64 +12,126 @@ import { CreateUserDto } from 'src/users/dtos/create-user-dto';
 
 const scrypt = promisify(_scrypt);
 
+interface TokenPayload {
+  id: number,
+  phoneNumber: number,
+  countryCode: number,
+  email?: string
+}
+
 @Injectable()
 export class AuthService {
   constructor(
     private userService: UsersService,
     private jwtService: JwtService,
-  ) {}
+  ) { }
 
   async signup(requestBody: CreateUserDto) {
-    const { countryCode, phoneNumber, password, email } = requestBody;
-    // 1. check if phone number is already in use
-    const isPhoneRegistered = this.userService.findRegisteredPhone(
-      countryCode,
-      phoneNumber,
-    );
-    return isPhoneRegistered;
-    // 2. Hash the user's password
-    // i. Generate a SALT
-    // const salt = randomBytes(8).toString('hex');
+    try {
+      console.log('requestBody : ', requestBody);
+      // return { requestBody };
+      const { countryCode, phoneNumber, password, email } = requestBody;
+      // 1. check if phone number is already in use
+      const isPhoneRegistered = await this.userService.findRegisteredPhone(
+        countryCode,
+        phoneNumber,
+      );
+      // return { isPhoneRegistered };
+      if (isPhoneRegistered) {
+        throw new BadRequestException('user already exists');
+      }
 
-    // // ii. Hash the SALT and password together
-    // const hash = (await scrypt(password, salt, 32)) as Buffer;
+      // 2. Hash the user's password
+      // i. Generate a SALT
+      const salt = randomBytes(8).toString('hex');
 
-    // // iii. Join the hashed result and the SALT together
-    // const hashedPassword = salt + '.' + hash.toString('hex');
+      // ii. Hash the SALT and password together
+      const hash = (await scrypt(password, salt, 32)) as Buffer;
 
-    // // 3. Create a new user and save in db
-    // const user = await this.userService.create(email, hashedPassword);
+      // iii. Join the hashed result and the SALT together
+      const hashedPassword = salt + '.' + hash.toString('hex');
 
-    // // 4. Return access token
-    // return user;
+      // 3. Create a new user and save in db
+      const user = await this.userService.create(countryCode, phoneNumber, hashedPassword, email);
+
+      // 4. Return created user
+      // return user;
+      const payload: TokenPayload = {
+        id: user.id,
+        phoneNumber: user.phoneNumber,
+        countryCode: user.countryCode,
+        email: user.email
+      }
+
+
+      return {
+        message: "successfully registered",
+        access_token: await this.generateToken(payload),
+      };
+    } catch (err) {
+      throw new InternalServerErrorException(err.message || 'some error has occurred');
+    }
+
   }
 
-  // async authenticate(
-  //   email: string,
-  //   password: string,
-  // ): Promise<{ access_token: string }> {
-  //   const [user] = await this.userService.find(email);
+  async authenticate(
+    requestBody: CreateUserDto
+  ) {
+    try {
+      const { countryCode, phoneNumber, password } = requestBody;
 
-  //   if (!user) {
-  //     throw new UnauthorizedException('authentication failed');
-  //   }
+      const user = await this.userService.findRegisteredPhone(countryCode, phoneNumber);
 
-  //   const [salt, storedHash] = user.password.split('.');
+      if (!user) {
+        throw new UnauthorizedException('authentication failed');
+      }
 
-  //   const hash = (await scrypt(password, salt, 32)) as Buffer;
+      const [salt, storedHash] = user.password.split('.');
 
-  //   if (storedHash !== hash.toString('hex')) {
-  //     throw new UnauthorizedException('authentication failed');
-  //   }
+      const hash = (await scrypt(password, salt, 32)) as Buffer;
 
-  //   // return user;
+      if (storedHash !== hash.toString('hex')) {
+        throw new UnauthorizedException('authentication failed');
+      }
 
-  //   const token = await this.jwtService.signAsync(
-  //     JSON.parse(JSON.stringify(user)),
-  //   );
-  //   // console.log('token : ', token);
-  //   return {
-  //     access_token: token,
-  //   };
-  // }
+      // return user;
+
+      const payload: TokenPayload = {
+        id: user.id,
+        phoneNumber: user.phoneNumber,
+        countryCode: user.countryCode,
+        email: user.email
+      }
+
+
+      return {
+        message: "successfully logged in",
+        access_token: await this.generateToken(payload),
+      };
+    } catch (err) {
+      throw err
+    }
+  }
+
+  private async generateToken(tokenPayload: TokenPayload) {
+    try {
+      // const tokenPayload = {
+      //   id: payload.id,
+      //   phoneNumber: payload.phoneNumber,
+      //   countryCode: payload.countryCode,
+      //   email: payload.email || null
+      // }
+
+      const token = await this.jwtService.signAsync(
+        JSON.parse(JSON.stringify(tokenPayload)),
+      );
+      // console.log('token : ', token);
+      return token;
+    } catch (err) {
+      throw err;
+    }
+
+  }
 }
+
+

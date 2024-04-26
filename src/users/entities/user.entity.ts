@@ -10,13 +10,13 @@ import {
 @Entity()
 @Unique('UQ_NUMBER', ['countryCode', 'phoneNumber'])
 export class User {
-  @PrimaryGeneratedColumn('uuid')
-  id: string;
+  @PrimaryGeneratedColumn()
+  id: number;
 
-  @Column({ length: 4 })
+  @Column({ type: 'smallint' })
   countryCode: number;
 
-  @Column({ length: 20 })
+  @Column({ type: 'integer' })
   phoneNumber: number;
 
   @Column({ unique: true, nullable: true })
