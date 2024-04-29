@@ -19,7 +19,7 @@ async function bootstrap() {
       .setTitle('Contact Search API')
       .setDescription('Contact Search API documentation')
       .setVersion('1.0')
-      // .addTag('cats')
+      .addBearerAuth()
       .build();
     const document = SwaggerModule.createDocument(app, config);
     SwaggerModule.setup('api-doc', app, document);

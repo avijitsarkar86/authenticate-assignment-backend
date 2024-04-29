@@ -13,25 +13,29 @@ import { ContactsService } from './contacts.service';
 // import { CreateContactDto } from './dto/create-contact.dto';
 // import { UpdateContactDto } from './dto/update-contact.dto';
 import { AuthGuard } from 'src/auth/guards/auth.guard';
-import { ApiTags } from '@nestjs/swagger';
+import { ApiBearerAuth, ApiQuery, ApiTags } from '@nestjs/swagger';
 import { SearchContactDto } from './dto/search-contact.dto';
 import { CurrentUser, ICurrentUser } from 'src/decorators/current-user.decorator';
 import { CreateSpamDto } from './dto/create-spam.dto';
 import { User } from 'src/users/entities/user.entity';
 import { request } from 'http';
 
-@ApiTags('contacts')
+
 @UseGuards(AuthGuard)
+@ApiTags('contacts')
+@ApiBearerAuth()
 @Controller('contacts')
 export class ContactsController {
   constructor(private readonly contactsService: ContactsService) { }
 
+  @ApiQuery({ name: 'searchStr', example: 'john' })
   @Get('/name-search')
-  listContactsByName(@Query() query) {
+  listContactsByName(@Query() query: { searchStr: string }) {
     const { searchStr } = query;
     return this.contactsService.findContactsByName(searchStr);
   }
 
+  @ApiQuery({ name: 'number', example: 91123456 })
   @Get('/number-search')
   listContactsByNumber(@Query() query) {
     const { number } = query;

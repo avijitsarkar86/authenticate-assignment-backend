@@ -13,14 +13,14 @@ import { CreateUserDto } from 'src/users/dtos/create-user-dto';
 // import { Serialize } from 'src/interceptors/serialize.interceptor';
 // import { UserDto } from 'src/users/dtos/user.dto';
 import { AuthGuard } from './guards/auth.guard';
-import { ApiTags } from '@nestjs/swagger';
+import { ApiBearerAuth, ApiTags } from '@nestjs/swagger';
 import { HttpExceptionFilter } from 'src/filters/http-exception.filter';
 import { LoginUserDto } from 'src/users/dtos/login-user-dto';
 
 @ApiTags('auth')
 @Controller('auth')
 export class AuthController {
-  constructor(private authService: AuthService) {}
+  constructor(private authService: AuthService) { }
 
   @Post('/signup')
   createUser(@Body() body: CreateUserDto) {
@@ -34,6 +34,7 @@ export class AuthController {
   }
 
   @UseGuards(AuthGuard)
+  @ApiBearerAuth()
   @Get('/whoami')
   getProfile(@Request() req) {
     console.log('req.user : ', req.user);
