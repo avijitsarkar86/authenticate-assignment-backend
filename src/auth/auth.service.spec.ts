@@ -1,5 +1,8 @@
 import { Test, TestingModule } from '@nestjs/testing';
 import { AuthService } from './auth.service';
+import { UsersService } from 'src/users/users.service';
+
+let fakeUserService: Partial<UsersService>;
 
 describe('AuthService', () => {
   let service: AuthService;
@@ -8,7 +11,6 @@ describe('AuthService', () => {
     const module: TestingModule = await Test.createTestingModule({
       providers: [AuthService],
     }).compile();
-
     service = module.get<AuthService>(AuthService);
   });
 

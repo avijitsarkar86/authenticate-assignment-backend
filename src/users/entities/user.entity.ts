@@ -1,13 +1,13 @@
+import { Contact } from 'src/contacts/entities/contact.entity';
 import { PhoneNumber } from 'src/phone-numbers/entities/phone-number.entity';
 import {
   Entity,
   Column,
   PrimaryGeneratedColumn,
-  OneToMany,
-  Index,
-  Unique,
   OneToOne,
   JoinColumn,
+  BeforeRemove,
+  OneToMany,
 } from 'typeorm';
 
 @Entity()
@@ -15,19 +15,21 @@ export class User {
   @PrimaryGeneratedColumn()
   id: number;
 
-  // @Column({ type: 'smallint' })
-  // countryCode: number;
-
-  // @Column({ type: 'integer' })
-  // phoneNumber: number;
-
-  @Column({ unique: true, nullable: true })
+  @Column({ nullable: true })
   email: string;
 
   @Column()
+  name: string;
+
+  @Column({ nullable: true })
   password: string;
 
-  @OneToOne(() => PhoneNumber, { cascade: true })
+  @OneToOne(() => PhoneNumber)
   @JoinColumn()
   number: PhoneNumber;
+
+  @OneToMany(() => Contact, (contact) => contact.contactOfUser, {
+    nullable: true,
+  })
+  contacts: Contact[];
 }

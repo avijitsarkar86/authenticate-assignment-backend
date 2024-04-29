@@ -10,6 +10,8 @@ import { APP_PIPE } from '@nestjs/core';
 import { ContactsModule } from './contacts/contacts.module';
 import { PhoneNumbersModule } from './phone-numbers/phone-numbers.module';
 import { PhoneNumber } from './phone-numbers/entities/phone-number.entity';
+import { Contact } from './contacts/entities/contact.entity';
+import { ContactBook } from './contacts/entities/contact-book.entity';
 
 @Module({
   imports: [
@@ -26,8 +28,9 @@ import { PhoneNumber } from './phone-numbers/entities/phone-number.entity';
         username: config.get<string>('DB_USER'),
         password: config.get<string>('DB_PASS'),
         database: config.get<string>('DB_NAME') as string,
-        entities: [PhoneNumber, User],
+        entities: [PhoneNumber, User, Contact, ContactBook],
         synchronize: true, // IMPORTANT: MAKE IT 'false' IN PRODUCTION
+        logging: true,
       }),
     }),
     AuthModule,
@@ -43,9 +46,9 @@ import { PhoneNumber } from './phone-numbers/entities/phone-number.entity';
       useValue: new ValidationPipe({
         whitelist: true,
         transform: true,
-        transformOptions: { enableImplicitConversion: true }
+        transformOptions: { enableImplicitConversion: true },
       }),
     },
   ],
 })
-export class AppModule { }
+export class AppModule {}

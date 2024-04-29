@@ -4,10 +4,12 @@ import { AuthService } from './auth.service';
 import { UsersModule } from 'src/users/users.module';
 import { JwtModule } from '@nestjs/jwt';
 import { ConfigService } from '@nestjs/config';
+import { PhoneNumbersModule } from 'src/phone-numbers/phone-numbers.module';
 
 @Module({
   imports: [
     UsersModule,
+    PhoneNumbersModule,
     JwtModule.registerAsync({
       inject: [ConfigService],
       useFactory: async (config: ConfigService) => ({
