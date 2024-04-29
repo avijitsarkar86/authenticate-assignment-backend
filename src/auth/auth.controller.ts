@@ -20,7 +20,7 @@ import { LoginUserDto } from 'src/users/dtos/login-user-dto';
 @ApiTags('auth')
 @Controller('auth')
 export class AuthController {
-  constructor(private authService: AuthService) { }
+  constructor(private authService: AuthService) {}
 
   @Post('/signup')
   createUser(@Body() body: CreateUserDto) {

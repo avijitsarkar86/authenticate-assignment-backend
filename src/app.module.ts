@@ -43,6 +43,7 @@ import { ContactBook } from './contacts/entities/contact-book.entity';
     UsersModule,
     ContactsModule,
     PhoneNumbersModule,
+    TypeOrmModule.forFeature([User, PhoneNumber, Contact]),
   ],
   controllers: [AppController],
   providers: [
