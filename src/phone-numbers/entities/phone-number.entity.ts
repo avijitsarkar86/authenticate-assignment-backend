@@ -4,6 +4,8 @@ import {
   Column,
   Entity,
   JoinColumn,
+  JoinTable,
+  ManyToMany,
   OneToMany,
   OneToOne,
   PrimaryGeneratedColumn,
@@ -13,7 +15,7 @@ import {
 @Entity()
 @Unique('UQ_NUMBER', ['countryCode', 'phoneNumber'])
 export class PhoneNumber {
-  @PrimaryGeneratedColumn()
+  @PrimaryGeneratedColumn('increment')
   id: number;
 
   @Column({ type: 'smallint' })
@@ -32,4 +34,8 @@ export class PhoneNumber {
     nullable: true,
   })
   number: Contact[];
+
+  @ManyToMany(() => User)
+  @JoinTable()
+  spammedBy: User[]
 }

@@ -11,7 +11,7 @@ import {
 
 @Entity()
 export class Contact {
-  @PrimaryGeneratedColumn()
+  @PrimaryGeneratedColumn('increment')
   id: number;
 
   @Column()
