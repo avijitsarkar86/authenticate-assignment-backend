@@ -28,6 +28,7 @@ async function bootstrap() {
     app.useGlobalFilters(new HttpExceptionFilter());
 
     await app.listen(__PORT, () => {
+      // adding comment for committing
       console.log(`Server is running at PORT "${__PORT}" in "${__ENV}" mode`);
     });
   } catch (err) {
