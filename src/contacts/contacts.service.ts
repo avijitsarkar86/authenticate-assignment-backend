@@ -120,7 +120,7 @@ export class ContactsService {
           details = { ...details, email: u_det.uEmail || null, name: u_det.name };
         }
 
-        return { details, currentUser };
+        return { contactDetails: details };
       }
       return new NotFoundException('contact not found');
     } catch (error) {
@@ -138,12 +138,9 @@ export class ContactsService {
       if (number) {
 
         // ====== check if already spammed by the logged in user
-        const findInd = number.spammedBy.findIndex((spb) => spb.id === currentUser.id);
-
-        console.log('findInd: ', findInd);
-
-        if (findInd > -1) {
-          message = 'number already marked as spam by you';
+        const spammedByMe = number.spammedBy.findIndex((spb) => spb.id === currentUser.id);
+        if (spammedByMe > -1) {
+          message = 'number already spammed by you';
         } else {
           number.spamCount = ++number.spamCount;
           number.spammedBy.push(currentUser);
