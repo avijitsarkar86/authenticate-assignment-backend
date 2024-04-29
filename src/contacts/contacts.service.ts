@@ -1,6 +1,4 @@
 import { Injectable, NotFoundException } from '@nestjs/common';
-// import { CreateContactDto } from './dto/contact-search.dto';
-import { SearchContactDto } from './dto/search-contact.dto';
 import { InjectRepository } from '@nestjs/typeorm';
 import { User } from 'src/users/entities/user.entity';
 import { Repository } from 'typeorm';
@@ -8,11 +6,6 @@ import { PhoneNumber } from 'src/phone-numbers/entities/phone-number.entity';
 import { ContactBook } from './entities/contact-book.entity';
 import { ICurrentUser } from 'src/decorators/current-user.decorator';
 import { CreateSpamDto } from './dto/create-spam.dto';
-
-// export interface SearchQueryParams {
-//   name: string;
-//   number: string;
-// }
 
 const DEFAULT_LIMIT = 50;
 
@@ -24,7 +17,7 @@ export interface ContactByNumber {
   numberId: number;
   userId?: number;
   matchScore?: number;
-};
+}
 
 export interface IDetailsResponse extends PhoneNumber {
   name: string;
@@ -37,7 +30,7 @@ export class ContactsService {
     @InjectRepository(ContactBook) private cbRepo: Repository<ContactBook>,
     @InjectRepository(User) private userRepo: Repository<User>,
     @InjectRepository(PhoneNumber) private pnRepo: Repository<PhoneNumber>,
-  ) { }
+  ) {}
 
   async findContactsByName(name: string) {
     try {
@@ -56,7 +49,6 @@ export class ContactsService {
     } catch (error) {
       throw error;
     }
-
   }
 
   async findContactsByNumber(number: string) {
@@ -78,9 +70,11 @@ export class ContactsService {
             'cb.phoneNumber as phoneNumber',
             'cb.spamCount as spamCount',
             'cb.id as numberId',
-            `LOCATE('${number}', CONCAT(cb.countryCode, cb.phoneNumber)) as matchScore`
+            `LOCATE('${number}', CONCAT(cb.countryCode, cb.phoneNumber)) as matchScore`,
           ])
-          .where('CONCAT(cb.countryCode, cb.phoneNumber) LIKE :number', { number: `%${number}%` })
+          .where('CONCAT(cb.countryCode, cb.phoneNumber) LIKE :number', {
+            number: `%${number}%`,
+          })
           .orderBy('matchScore')
           .limit(DEFAULT_LIMIT)
           .getRawMany();
@@ -95,29 +89,37 @@ export class ContactsService {
   async getContactDetails(numberId: string, currentUser: ICurrentUser) {
     try {
       const id = parseInt(numberId);
-      let details: Partial<IDetailsResponse> = await this.pnRepo.findOneBy({ id });
+      let details: Partial<IDetailsResponse> = await this.pnRepo.findOneBy({
+        id,
+      });
       if (details) {
-        // ==== user is not registered 
+        // ==== user is not registered
         if (!details.isRegistered) {
           const name = (await this.cbRepo.findOneBy({ id })).name;
           details = { ...details, name };
         }
         // ===== user is registered
         else {
-          const u_det = await this.userRepo.createQueryBuilder('u')
+          const u_det = await this.userRepo
+            .createQueryBuilder('u')
             .select([
-              'u.name as name', 'u.id as uId',
+              'u.name as name',
+              'u.id as uId',
               `(
                 CASE
                   WHEN (u.id = ${currentUser.userId}) THEN u.email
                   WHEN (SELECT COUNT(c.id) FROM contact c WHERE c.contactOfUserId = u.id AND c.numberId = ${currentUser.numberId}) > 0 THEN u.email
                   ELSE null
                 END
-              ) as uEmail`
+              ) as uEmail`,
             ])
             .where('u.number = :id', { id })
             .getRawOne();
-          details = { ...details, email: u_det.uEmail || null, name: u_det.name };
+          details = {
+            ...details,
+            email: u_det.uEmail || null,
+            name: u_det.name,
+          };
         }
 
         return { contactDetails: details };
@@ -136,9 +138,10 @@ export class ContactsService {
       let number = await this.getNumber(countryCode, phoneNumber);
 
       if (number) {
-
         // ====== check if already spammed by the logged in user
-        const spammedByMe = number.spammedBy.findIndex((spb) => spb.id === currentUser.id);
+        const spammedByMe = number.spammedBy.findIndex(
+          (spb) => spb.id === currentUser.id,
+        );
         if (spammedByMe > -1) {
           message = 'number already spammed by you';
         } else {
@@ -146,15 +149,13 @@ export class ContactsService {
           number.spammedBy.push(currentUser);
           await this.pnRepo.save(number);
         }
-
-      }
-      else {
+      } else {
         // ====== NUMBER DOES NOT EXISTS - CREATING NEW RECORD
         number = this.pnRepo.create({
           countryCode,
           phoneNumber,
           spamCount: 1,
-          spammedBy: [currentUser]
+          spammedBy: [currentUser],
         });
         await this.pnRepo.save(number);
         isNewRecord = true;
@@ -163,22 +164,29 @@ export class ContactsService {
         message: message,
         countryCode,
         phoneNumber,
-        isNewRecord
-      }
+        isNewRecord,
+      };
     } catch (error) {
       throw error;
     }
-
   }
 
   /**
-   * 
+   *
    * PRIVATE FUNCTIONS
    */
   private async getRegisteredNumber(number: string) {
     try {
-      const result = await this.userRepo.createQueryBuilder('u')
-        .select(['u.name as name', 'u.numberId as numberId', 'u.id as userId', 'n.countryCode as countryCode', 'n.phoneNumber as phoneNumber', 'n.spamCount as spamCount'])
+      const result = await this.userRepo
+        .createQueryBuilder('u')
+        .select([
+          'u.name as name',
+          'u.numberId as numberId',
+          'u.id as userId',
+          'n.countryCode as countryCode',
+          'n.phoneNumber as phoneNumber',
+          'n.spamCount as spamCount',
+        ])
         .innerJoin('u.number', 'n', 'u.numberId = n.id')
         .where('CONCAT(n.countryCode, n.phoneNumber) = :number', { number })
         .andWhere('n.isRegistered = :isRegistered', { isRegistered: true })
@@ -187,20 +195,17 @@ export class ContactsService {
     } catch (error) {
       throw error;
     }
-
-
   }
 
   private getNumber(countryCode: number, phoneNumber: number) {
     return this.pnRepo.findOne({
       relations: {
-        spammedBy: true
+        spammedBy: true,
       },
       where: {
         countryCode,
-        phoneNumber
-      }
-
-    })
+        phoneNumber,
+      },
+    });
   }
 }

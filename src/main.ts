@@ -8,8 +8,9 @@ async function bootstrap() {
     const app = await NestFactory.create(AppModule);
     const __PORT = process.env.PORT || 3001;
 
-    app.enableCors();
+    const __ENV = process.env.NODE_ENV;
 
+    app.enableCors();
 
     /**
      * SWAGGER CONFIGURATION
@@ -24,12 +25,11 @@ async function bootstrap() {
     const document = SwaggerModule.createDocument(app, config);
     SwaggerModule.setup('api-doc', app, document);
 
-
     app.useGlobalFilters(new HttpExceptionFilter());
 
-    await app.listen(__PORT);
-
-    console.log(`Server is running at http://localhost:${__PORT}`);
+    await app.listen(__PORT, () => {
+      console.log(`Server is running at PORT "${__PORT}" in "${__ENV}" mode`);
+    });
   } catch (err) {
     console.error(err);
     process.exit(0);

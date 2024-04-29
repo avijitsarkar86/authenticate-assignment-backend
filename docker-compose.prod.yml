@@ -1,0 +1,32 @@
+services:
+  mysql_db_prod:
+    image: mysql
+    expose:
+      - '3307'
+    ports:
+      - '3308:3308'
+    environment:
+      - MYSQL_ROOT_PASSWORD=root@password@3233
+      - MYSQL_DATABASE=contact-search
+      - MYSQL_USER=csuser
+      - MYSQL_PASSWORD=csuser@123
+      - MYSQL_TCP_PORT=3308
+  nestjs_backend_prod:
+    depends_on:
+      - mysql_db_prod
+    build:
+      context: .
+      dockerfile: Dockerfile.prod
+    ports:
+      - '3001:3001'
+    environment:
+      - DB_NAME=contact-search
+      - DB_USER=csuser
+      - DB_PASS=csuser@123
+      - DB_TYPE=mysql
+      - DB_HOST=mysql_db_prod
+      - DB_PORT=3308
+      - PORT=3001
+      - JWT_SECRET=jwtse6reTkeyw0rd
+    volumes:
+      - ./src:/usr/src/app/src

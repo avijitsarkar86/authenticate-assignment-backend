@@ -28,6 +28,12 @@ import { ContactBook } from './contacts/entities/contact-book.entity';
         username: config.get<string>('DB_USER'),
         password: config.get<string>('DB_PASS'),
         database: config.get<string>('DB_NAME') as string,
+
+        // host: 'mysql_db',
+        // port: 3307,
+        // username: 'csuser',
+        // password: 'csuser123',
+        // database: 'contact-search',
         entities: [PhoneNumber, User, Contact, ContactBook],
         synchronize: true, // IMPORTANT: MAKE IT 'false' IN PRODUCTION
         logging: true,

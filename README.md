@@ -67,6 +67,12 @@ once the server is running, please execute the signup api once (/auth/signup). A
 
 This is required to generate authToken and for the purpose of securing the api. Manual login is not required, it's now been done internally inside the application.
 
+## Docker compose
+
+https://www.youtube.com/watch?v=a0B6MdC75z0
+
+build: docker-compose -f docker-compose.yml up --build
+
 ## Database
 
 I have used sqlite database for this demo. In VSCode saved data can be checked via sqlite explorer. Please find the instruction here to [open database in VSCode](https://youtu.be/0rlBCHWAemk)
