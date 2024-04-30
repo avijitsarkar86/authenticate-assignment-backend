@@ -68,7 +68,7 @@ $ npm run start:prod
 Based on enviroment, server will be available at the respective port  http://localhost:<PORT>
 
 ## LIVE DEMO (BACKEND)
-[live backend server]https://authenticate-assignment-backend-production.up.railway.app/
+[live backend server](https://authenticate-assignment-backend-production.up.railway.app/)
 
 ## API DOCUMENTATION
 [Swagger Api Documentation](https://authenticate-assignment-backend-production.up.railway.app/api-doc) is available here. APIs can be tested directly from the documentation as well.
