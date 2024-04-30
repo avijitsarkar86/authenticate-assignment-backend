@@ -16,7 +16,7 @@ services:
       - mysql_db_prod
     build:
       context: .
-      dockerfile: Dockerfile.prod
+      dockerfile: Dockerfile
     ports:
       - '3001:3001'
     environment:

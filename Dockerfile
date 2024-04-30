@@ -6,7 +6,11 @@ COPY . .
 
 RUN npm install
 
-EXPOSE 3000
+RUN npm run build
+
+RUN rm -rf ./src
+
+EXPOSE 3001
 
 # npm run start:dev
-CMD [ "npm", "run", "start:dev" ]
+CMD [ "npm", "run", "start:prod" ]

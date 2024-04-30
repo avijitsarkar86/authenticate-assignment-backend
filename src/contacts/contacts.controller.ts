@@ -14,11 +14,9 @@ import { ContactsService } from './contacts.service';
 // import { UpdateContactDto } from './dto/update-contact.dto';
 import { AuthGuard } from 'src/auth/guards/auth.guard';
 import { ApiBearerAuth, ApiQuery, ApiTags } from '@nestjs/swagger';
-import { SearchContactDto } from './dto/search-contact.dto';
 import { CurrentUser, ICurrentUser } from 'src/decorators/current-user.decorator';
 import { CreateSpamDto } from './dto/create-spam.dto';
 import { User } from 'src/users/entities/user.entity';
-import { request } from 'http';
 
 
 @UseGuards(AuthGuard)
