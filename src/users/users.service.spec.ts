@@ -7,6 +7,7 @@ describe('UsersService', () => {
   beforeEach(async () => {
     const module: TestingModule = await Test.createTestingModule({
       providers: [UsersService],
+      // imports: [TypeOrmModule.forFeature([User, PhoneNumber])]
     }).compile();
 
     service = module.get<UsersService>(UsersService);

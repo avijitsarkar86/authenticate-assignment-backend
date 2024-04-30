@@ -1,8 +1,8 @@
 import { Injectable, NotFoundException } from '@nestjs/common';
 import { InjectRepository } from '@nestjs/typeorm';
-import { User } from 'src/users/entities/user.entity';
+import { User } from '../../src/users/entities/user.entity';
 import { Repository } from 'typeorm';
-import { PhoneNumber } from 'src/phone-numbers/entities/phone-number.entity';
+import { PhoneNumber } from '../../src/phone-numbers/entities/phone-number.entity';
 import { ContactBook } from './entities/contact-book.entity';
 import { ICurrentUser } from 'src/decorators/current-user.decorator';
 import { CreateSpamDto } from './dto/create-spam.dto';
@@ -30,7 +30,7 @@ export class ContactsService {
     @InjectRepository(ContactBook) private cbRepo: Repository<ContactBook>,
     @InjectRepository(User) private userRepo: Repository<User>,
     @InjectRepository(PhoneNumber) private pnRepo: Repository<PhoneNumber>,
-  ) {}
+  ) { }
 
   async findContactsByName(name: string) {
     try {

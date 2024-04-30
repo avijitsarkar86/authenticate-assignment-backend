@@ -1,9 +1,8 @@
-import { Injectable, NotFoundException } from '@nestjs/common';
+import { Injectable } from '@nestjs/common';
 import { InjectRepository } from '@nestjs/typeorm';
 import { User } from './entities/user.entity';
 import { Repository } from 'typeorm';
-import { PhoneNumber } from 'src/phone-numbers/entities/phone-number.entity';
-import { faker } from '@faker-js/faker';
+import { PhoneNumber } from '../../src/phone-numbers/entities/phone-number.entity';
 
 // This should be a real class/interface representing a user entity
 // export type User = any;
@@ -13,7 +12,7 @@ export class UsersService {
   constructor(
     @InjectRepository(User) private userRepo: Repository<User>,
     @InjectRepository(PhoneNumber) private numberRepo: Repository<PhoneNumber>,
-  ) {}
+  ) { }
 
   async create(
     countryCode: number,

@@ -1,5 +1,5 @@
-import { Contact } from 'src/contacts/entities/contact.entity';
-import { PhoneNumber } from 'src/phone-numbers/entities/phone-number.entity';
+import { Contact } from '../../../src/contacts/entities/contact.entity';
+import { PhoneNumber } from '../../../src/phone-numbers/entities/phone-number.entity';
 import {
   Entity,
   Column,

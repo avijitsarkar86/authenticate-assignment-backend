@@ -5,8 +5,9 @@ import { TypeOrmModule } from '@nestjs/typeorm';
 import { Contact } from './entities/contact.entity';
 import { AuthModule } from 'src/auth/auth.module';
 import { ContactBook } from './entities/contact-book.entity';
-import { PhoneNumber } from 'src/phone-numbers/entities/phone-number.entity';
-import { User } from 'src/users/entities/user.entity';
+import { PhoneNumber } from '../../src/phone-numbers/entities/phone-number.entity';
+import { User } from '../../src/users/entities/user.entity';
+// import { User } from '../../src/users/entities/user.entity';
 
 @Module({
   imports: [
@@ -16,4 +17,4 @@ import { User } from 'src/users/entities/user.entity';
   controllers: [ContactsController],
   providers: [ContactsService],
 })
-export class ContactsModule {}
+export class ContactsModule { }
