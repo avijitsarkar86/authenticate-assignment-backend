@@ -1,4 +1,4 @@
-import { Injectable } from '@nestjs/common';
+import { BadRequestException, Injectable } from '@nestjs/common';
 import { InjectRepository } from '@nestjs/typeorm';
 import { User } from './users/entities/user.entity';
 import { Repository } from 'typeorm';
@@ -12,7 +12,7 @@ export class AppService {
     @InjectRepository(User) private userRepo: Repository<User>,
     @InjectRepository(PhoneNumber) private pnRepo: Repository<PhoneNumber>,
     @InjectRepository(Contact) private contactRepo: Repository<Contact>,
-  ) {}
+  ) { }
 
   getHello(): string {
     return 'Hello World!';
@@ -20,6 +20,14 @@ export class AppService {
 
   async generateUserRecord(count: number = 30) {
     try {
+      const userCount = await this.userRepo.createQueryBuilder()
+        .getCount();
+      // return { userCount };
+
+      if (userCount > 50) {
+        throw new BadRequestException('enough data available for testing');
+      }
+
       let response = [];
 
       for (let i = 0; i < count; i++) {
