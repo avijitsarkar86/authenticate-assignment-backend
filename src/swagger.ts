@@ -1,6 +1,6 @@
 import { INestApplication } from "@nestjs/common";
 import { DocumentBuilder, SwaggerModule } from "@nestjs/swagger";
-import expressBasicAuth from "express-basic-auth";
+import * as expressBasicAuth from "express-basic-auth";
 
 export const setupSwagger = (app: INestApplication) => {
   console.log("ENV :: ", process.env.NODE_ENV);
