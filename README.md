@@ -59,26 +59,37 @@ $ npm run start:dev
 $ npm run start:prod
 ```
 
-Note: Please run the app in development mode. Port 3000 has been set in the .env.development file. Server will be available at http://localhost:3000
+## development .env
+.env.development
 
-## Special Instruction
+## production .env
+.env.production
 
-once the server is running, please execute the signup api once (/auth/signup). Api is available in [postman collection](https://github.com/avijitsarkar86/task-assignment-backend-nest/blob/main/TASK-ASSIGNMENT.postman_collection.json) in the repository.
+Based on enviroment, server will be available at the respective port  http://localhost:<PORT>
 
-This is required to generate authToken and for the purpose of securing the api. Manual login is not required, it's now been done internally inside the application.
+## LIVE DEMO (BACKEND)
+[live backend server]https://authenticate-assignment-backend-production.up.railway.app/
 
-## Docker compose
+## API DOCUMENTATION
+[Swagger Api Documentation](https://authenticate-assignment-backend-production.up.railway.app/api-doc) is available here. APIs can be tested directly from the documentation as well.
 
-https://www.youtube.com/watch?v=a0B6MdC75z0
 
-build: docker-compose -f docker-compose.yml up --build
+## POSTMAN COLLECTION
 
-## Database
+[Postman Collection](https://github.com/avijitsarkar86/authenticate-assignment-backend/blob/master/AUTHENTICATE-ASSIGNMENT.postman_collection.json) available in the repository. Can be downloaded and exported for api testing.
 
-I have used sqlite database for this demo. In VSCode saved data can be checked via sqlite explorer. Please find the instruction here to [open database in VSCode](https://youtu.be/0rlBCHWAemk)
 
-For this application db file name is "db.sqlite"
+## Running via Docker compose
 
-## License
+Via docker compose both mysql and nestjs can be containerize and can be make up and running in local machine.
 
-Nest is [MIT licensed](LICENSE).
+```bash
+# development
+$ docker-compose -f docker-compose.yml up --build -d
+
+# production mode
+$ docker-compose -f docker-compose.prod.yml up --build -d
+```
+
+# note: few changes might require in .env file to change the value 
+
