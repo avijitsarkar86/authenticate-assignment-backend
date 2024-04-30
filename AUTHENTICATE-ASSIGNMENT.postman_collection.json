@@ -1,0 +1,413 @@
+{
+	"info": {
+		"_postman_id": "612d6ff7-6616-4035-a75a-4ee766531622",
+		"name": "AUTHENTICATE-ASSIGNMENT",
+		"schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json",
+		"_exporter_id": "1469152"
+	},
+	"item": [
+		{
+			"name": "auth",
+			"item": [
+				{
+					"name": "/auth/signup",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"var res = pm.response.json();",
+									"// console.log('res: ', res.access_token);",
+									"pm.collectionVariables.set('accessToken', res.access_token);"
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
+					"request": {
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n  \"email\": \"abc1@gmail.com\",\n  \"name\": \"Carl Min\",\n  \"countryCode\": 91,\n  \"phoneNumber\": \"1234567898\",\n  \"password\": \"password\"\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{host}}://{{domain}}/auth/signup",
+							"protocol": "{{host}}",
+							"host": [
+								"{{domain}}"
+							],
+							"path": [
+								"auth",
+								"signup"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "/auth/signin",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"var res = pm.response.json();",
+									"// console.log('res: ', res.access_token);",
+									"pm.collectionVariables.set('accessToken', res.access_token);"
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
+					"request": {
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n  \"countryCode\": 742,\n  \"phoneNumber\": 7027398717,\n  \"password\": \"password\"\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{host}}://{{domain}}/auth/login",
+							"protocol": "{{host}}",
+							"host": [
+								"{{domain}}"
+							],
+							"path": [
+								"auth",
+								"login"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "/auth/whoami",
+					"protocolProfileBehavior": {
+						"disableBodyPruning": true
+					},
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "{{accessToken}}",
+									"type": "string"
+								}
+							]
+						},
+						"method": "GET",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n    \"email\": \"test123@test.com\",\n    \"password\": \"password\"\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{host}}://{{domain}}/auth/whoami",
+							"protocol": "{{host}}",
+							"host": [
+								"{{domain}}"
+							],
+							"path": [
+								"auth",
+								"whoami"
+							]
+						}
+					},
+					"response": []
+				}
+			]
+		},
+		{
+			"name": "contacts",
+			"item": [
+				{
+					"name": "/contacts/name-search",
+					"protocolProfileBehavior": {
+						"disableBodyPruning": true
+					},
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "{{accessToken}}",
+									"type": "string"
+								}
+							]
+						},
+						"method": "GET",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n    \"email\": \"test123@test.com\",\n    \"password\": \"password\"\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{host}}://{{domain}}/contacts/name-search?searchStr=ca",
+							"protocol": "{{host}}",
+							"host": [
+								"{{domain}}"
+							],
+							"path": [
+								"contacts",
+								"name-search"
+							],
+							"query": [
+								{
+									"key": "number",
+									"value": "1234",
+									"disabled": true
+								},
+								{
+									"key": "searchStr",
+									"value": "ca"
+								}
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "/contacts/number-search",
+					"protocolProfileBehavior": {
+						"disableBodyPruning": true
+					},
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "{{accessToken}}",
+									"type": "string"
+								}
+							]
+						},
+						"method": "GET",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n    \"email\": \"test123@test.com\",\n    \"password\": \"password\"\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{host}}://{{domain}}/contacts/number-search?number=702",
+							"protocol": "{{host}}",
+							"host": [
+								"{{domain}}"
+							],
+							"path": [
+								"contacts",
+								"number-search"
+							],
+							"query": [
+								{
+									"key": "number",
+									"value": "702"
+								}
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "/contacts/:numberId",
+					"protocolProfileBehavior": {
+						"disableBodyPruning": true
+					},
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "{{accessToken}}",
+									"type": "string"
+								}
+							]
+						},
+						"method": "GET",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n    \"email\": \"test123@test.com\",\n    \"password\": \"password\"\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{host}}://{{domain}}/contacts/209",
+							"protocol": "{{host}}",
+							"host": [
+								"{{domain}}"
+							],
+							"path": [
+								"contacts",
+								"209"
+							],
+							"query": [
+								{
+									"key": "searchStr",
+									"value": "jo",
+									"disabled": true
+								}
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "/contacts/mark-as-spam",
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "{{accessToken}}",
+									"type": "string"
+								}
+							]
+						},
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n    \"countryCode\": \"93\",\n    \"phoneNumber\": \"1234567899\"\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{host}}://{{domain}}/contacts/mark-as-spam",
+							"protocol": "{{host}}",
+							"host": [
+								"{{domain}}"
+							],
+							"path": [
+								"contacts",
+								"mark-as-spam"
+							],
+							"query": [
+								{
+									"key": "searchStr",
+									"value": "jo",
+									"disabled": true
+								}
+							]
+						}
+					},
+					"response": []
+				}
+			]
+		},
+		{
+			"name": "/generate-test-records",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"exec": [
+							"var res = pm.response.json();",
+							"// console.log('res: ', res.access_token);",
+							"pm.collectionVariables.set('accessToken', res.access_token);"
+						],
+						"type": "text/javascript"
+					}
+				}
+			],
+			"request": {
+				"method": "POST",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "{\n  \"email\": \"abc1@gmail.com\",\n  \"name\": \"Carl Min\",\n  \"countryCode\": 91,\n  \"phoneNumber\": \"1234567898\",\n  \"password\": \"password\"\n}",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "{{host}}://{{domain}}/generate-test-records",
+					"protocol": "{{host}}",
+					"host": [
+						"{{domain}}"
+					],
+					"path": [
+						"generate-test-records"
+					]
+				}
+			},
+			"response": []
+		}
+	],
+	"event": [
+		{
+			"listen": "prerequest",
+			"script": {
+				"type": "text/javascript",
+				"exec": [
+					""
+				]
+			}
+		},
+		{
+			"listen": "test",
+			"script": {
+				"type": "text/javascript",
+				"exec": [
+					""
+				]
+			}
+		}
+	],
+	"variable": [
+		{
+			"key": "accessToken",
+			"value": "test"
+		},
+		{
+			"key": "accessToken",
+			"value": ""
+		},
+		{
+			"key": "domain",
+			"value": "localhost:3001"
+		},
+		{
+			"key": "host",
+			"value": "http"
+		}
+	]
+}
