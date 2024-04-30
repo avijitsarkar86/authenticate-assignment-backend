@@ -2,6 +2,7 @@ import { NestFactory } from '@nestjs/core';
 import { AppModule } from './app.module';
 import { DocumentBuilder, SwaggerModule } from '@nestjs/swagger';
 import { HttpExceptionFilter } from './filters/http-exception.filter';
+import { setupSwagger } from './swagger';
 
 async function bootstrap() {
   try {
@@ -16,14 +17,15 @@ async function bootstrap() {
      * SWAGGER CONFIGURATION
      */
 
-    const config = new DocumentBuilder()
-      .setTitle('Contact Search API')
-      .setDescription('Contact Search API documentation')
-      .setVersion('1.0')
-      .addBearerAuth()
-      .build();
-    const document = SwaggerModule.createDocument(app, config);
-    SwaggerModule.setup('api-doc', app, document);
+    // const config = new DocumentBuilder()
+    //   .setTitle('Contact Search API')
+    //   .setDescription('Contact Search API documentation')
+    //   .setVersion('1.0')
+    //   .addBearerAuth()
+    //   .build();
+    // const document = SwaggerModule.createDocument(app, config);
+    // SwaggerModule.setup('api-doc', app, document);
+    setupSwagger(app);
 
     app.useGlobalFilters(new HttpExceptionFilter());
 
