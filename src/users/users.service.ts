@@ -2,7 +2,7 @@ import { Injectable } from '@nestjs/common';
 import { InjectRepository } from '@nestjs/typeorm';
 import { User } from './entities/user.entity';
 import { Repository } from 'typeorm';
-import { PhoneNumber } from '../../src/phone-numbers/entities/phone-number.entity';
+import { PhoneNumber } from 'src/phone-numbers/entities/phone-number.entity';
 
 // This should be a real class/interface representing a user entity
 // export type User = any;

@@ -1,5 +1,5 @@
-import { PhoneNumber } from '../../../src/phone-numbers/entities/phone-number.entity';
-import { User } from '../../../src/users/entities/user.entity';
+import { PhoneNumber } from 'src/phone-numbers/entities/phone-number.entity';
+import { User } from 'src/users/entities/user.entity';
 import {
   Column,
   Entity,

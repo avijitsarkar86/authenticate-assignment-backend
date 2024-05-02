@@ -1,5 +1,5 @@
-import { Contact } from '../../../src/contacts/entities/contact.entity';
-import { User } from '../../../src/users/entities/user.entity';
+import { Contact } from 'src/contacts/entities/contact.entity';
+import { User } from 'src/users/entities/user.entity';
 import {
   Column,
   Entity,
@@ -37,5 +37,5 @@ export class PhoneNumber {
 
   @ManyToMany(() => User)
   @JoinTable()
-  spammedBy: User[]
+  spammedBy: User[];
 }
