@@ -37,5 +37,5 @@ export class PhoneNumber {
 
   @ManyToMany(() => User)
   @JoinTable()
-  spammedBy: User[]
+  spammedBy: User[];
 }

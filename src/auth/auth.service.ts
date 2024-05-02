@@ -34,7 +34,7 @@ export class AuthService {
     try {
       const { countryCode, phoneNumber, password, email, name } = requestBody;
       // 1. check if phone number is already in use
-      const isPhoneRegistered = await this.userService.findRegisteredPhone(
+      const isPhoneRegistered = await this.userService.findPhoneByRegistration(
         countryCode,
         phoneNumber,
       );
