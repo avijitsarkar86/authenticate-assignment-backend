@@ -12,7 +12,7 @@ export class UsersService {
   constructor(
     @InjectRepository(User) private userRepo: Repository<User>,
     @InjectRepository(PhoneNumber) private numberRepo: Repository<PhoneNumber>,
-  ) { }
+  ) {}
 
   async create(
     countryCode: number,
@@ -22,7 +22,12 @@ export class UsersService {
     email?: string,
   ) {
     try {
-      let number = await this.findNotRegisteredPhone(countryCode, phoneNumber);
+      // ===== check if the number is NOT registered
+      let number = await this.findPhoneByRegistration(
+        countryCode,
+        phoneNumber,
+        false,
+      );
 
       if (!number) {
         number = this.numberRepo.create({
@@ -42,37 +47,11 @@ export class UsersService {
     }
   }
 
-  // TODO START: code need to be re-factored
-
-  findRegisteredPhone(countryCode: number, phoneNumber: number) {
-    if (!countryCode || !phoneNumber) return null;
-
-    return this.numberRepo.findOneBy({
-      countryCode,
-      phoneNumber,
-      isRegistered: true,
-    });
-  }
-
-  
-
-  findNotRegisteredPhone(countryCode: number, phoneNumber: number) {
-    if (!countryCode || !phoneNumber) return null;
-
-    return this.numberRepo.findOneBy({
-      countryCode,
-      phoneNumber,
-      isRegistered: false,
-    });
-  }
-
-  // TODO END: code need to be re-factored
-
   async findRegisteredUser(countryCode: number, phoneNumber: number) {
     try {
       if (!countryCode || !phoneNumber) return null;
 
-      const registeredPhone = await this.findRegisteredPhone(
+      const registeredPhone = await this.findPhoneByRegistration(
         countryCode,
         phoneNumber,
       );
@@ -91,5 +70,19 @@ export class UsersService {
     } catch (error) {
       throw error;
     }
+  }
+
+  findPhoneByRegistration(
+    countryCode: number,
+    phoneNumber: number,
+    isRegistered = true,
+  ) {
+    if (!countryCode || !phoneNumber) return null;
+
+    return this.numberRepo.findOneBy({
+      countryCode,
+      phoneNumber,
+      isRegistered,
+    });
   }
 }
