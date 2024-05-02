@@ -42,6 +42,8 @@ export class UsersService {
     }
   }
 
+  // TODO START: code need to be re-factored
+
   findRegisteredPhone(countryCode: number, phoneNumber: number) {
     if (!countryCode || !phoneNumber) return null;
 
@@ -52,6 +54,8 @@ export class UsersService {
     });
   }
 
+  
+
   findNotRegisteredPhone(countryCode: number, phoneNumber: number) {
     if (!countryCode || !phoneNumber) return null;
 
@@ -61,6 +65,8 @@ export class UsersService {
       isRegistered: false,
     });
   }
+
+  // TODO END: code need to be re-factored
 
   async findRegisteredUser(countryCode: number, phoneNumber: number) {
     try {
